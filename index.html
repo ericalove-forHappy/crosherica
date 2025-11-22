@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>Knitting Counter Dual</title>
+<style>
+    body {
+        margin: 0;
+        background: #f7f7f7;
+        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        user-select: none;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: row;
+        gap: 80px;
+        align-items: center;
+    }
+
+    .counter-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .label {
+        font-size: 2rem;
+        color: #555;
+        margin-bottom: 10px;
+    }
+
+    .value-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .value {
+        font-size: 6rem;
+        font-weight: 700;
+        color: #333;
+        min-width: 120px;
+        text-align: center;
+    }
+
+    .arrow-box {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .arrow-btn {
+        width: 60px;
+        height: 60px;
+        font-size: 2.2rem;
+        font-weight: bold;
+        border: none;
+        border-radius: 14px;
+        background: white;
+        box-shadow: 0 3px 7px rgba(0,0,0,0.15);
+        cursor: pointer;
+        color: #444;
+    }
+
+    .arrow-btn:active {
+        transform: scale(0.95);
+    }
+
+    .reset-btn {
+        padding: 14px 30px;
+        font-size: 1.2rem;
+        border: none;
+        border-radius: 12px;
+        background: #ff6b6b;
+        color: white;
+        font-weight: 600;
+        margin-top: 20px;
+        cursor: pointer;
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+    .reset-btn:active {
+        transform: scale(0.97);
+    }
+
+    .info {
+        font-size: 1rem;
+        color: #777;
+        position: absolute;
+        bottom: 20px;
+        text-align: center;
+        line-height: 1.4em;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- 좌측: 단 -->
+    <div class="counter-box">
+        <div class="label">단</div>
+
+        <div class="value-wrapper">
+            <div class="value" id="rowCount">0</div>
+
+            <div class="arrow-box">
+                <button class="arrow-btn" id="rowUp">▲</button>
+                <button class="arrow-btn" id="rowDown">▼</button>
+            </div>
+        </div>
+
+        <button class="reset-btn" id="resetRow">단 초기화</button>
+    </div>
+
+    <!-- 우측: 코 -->
+    <div class="counter-box">
+        <div class="label">코</div>
+
+        <div class="value-wrapper">
+            <div class="value" id="stitchCount">0</div>
+
+            <div class="arrow-box">
+                <button class="arrow-btn" id="stitchUp">▲</button>
+                <button class="arrow-btn" id="stitchDown">▼</button>
+            </div>
+        </div>
+
+        <button class="reset-btn" id="resetStitch">코 초기화</button>
+    </div>
+
+</div>
+
+<div class="info">
+    a: 코 증가 / b: 코 초기화 / c: 단 증가
+</div>
+
+<script>
+    // 저장된 값 불러오기
+    let countRow = parseInt(localStorage.getItem("knitRow") || "0");
+    let countStitch = parseInt(localStorage.getItem("knitStitch") || "0");
+
+    const rowEl = document.getElementById("rowCount");
+    const stitchEl = document.getElementById("stitchCount");
+
+    function update() {
+        rowEl.innerText = countRow;
+        stitchEl.innerText = countStitch;
+
+        localStorage.setItem("knitRow", countRow);
+        localStorage.setItem("knitStitch", countStitch);
+    }
+
+    update();
+
+    // 키 입력 처리
+    document.addEventListener("keydown", (e) => {
+        const key = e.key.toLowerCase();
+
+        if (key === "a") {        // 코 증가
+            countStitch++;
+        } else if (key === "b") { // 코 초기화
+            countStitch = 0;
+        } else if (key === "c") { // 단 증가
+            countRow++;
+        }
+        update();
+    });
+
+    // 단 ▲▼
+    document.getElementById("rowUp").addEventListener("click", () => {
+        countRow++;
+        update();
+    });
+
+    document.getElementById("rowDown").addEventListener("click", () => {
+        if (countRow > 0) countRow--;
+        update();
+    });
+
+    // 코 ▲▼
+    document.getElementById("stitchUp").addEventListener("click", () => {
+        countStitch++;
+        update();
+    });
+
+    document.getElementById("stitchDown").addEventListener("click", () => {
+        if (countStitch > 0) countStitch--;
+        update();
+    });
+
+    // 초기화 버튼
+    document.getElementById("resetRow").addEventListener("click", () => {
+        countRow = 0;
+        update();
+    });
+
+    document.getElementById("resetStitch").addEventListener("click", () => {
+        countStitch = 0;
+        update();
+    });
+</script>
+
+</body>
+</html>
