@@ -3,8 +3,11 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Knitting Counter Dual - 2x + Timer</title>
+<title>Knitting Counter Dual - Final</title>
 <style>
+    :root {
+        --scale: 1.5; /* 초기 배율 */
+    }
     body { 
         margin:0; 
         background:#f7f7f7; 
@@ -18,7 +21,7 @@
     }
     .container { 
         display:flex; 
-        gap:160px; 
+        gap: calc(80px * var(--scale)); 
         align-items:center;
     }
     .counter-box { 
@@ -27,93 +30,107 @@
         align-items:center;
     }
     .label { 
-        font-size:4rem; 
+        font-size: calc(2rem * var(--scale)); 
         color:#555; 
-        margin-bottom:20px; 
+        margin-bottom: calc(10px * var(--scale));
     }
     .value-wrapper { 
         display:flex; 
         align-items:center; 
-        gap:40px; 
+        gap: calc(20px * var(--scale));
     }
     .value { 
-        font-size:12rem; 
+        font-size: calc(6rem * 0.75 * var(--scale)); /* 75%로 축소 */ 
         font-weight:700; 
         color:#333; 
-        min-width:240px; 
+        min-width: calc(120px * var(--scale)); 
         text-align:center;
     }
     .arrow-box { 
         display:flex; 
         flex-direction:column; 
-        gap:30px; 
+        gap: calc(15px * var(--scale));
     }
     .arrow-btn { 
-        width:120px; 
-        height:120px; 
-        font-size:4.4rem; 
+        width: calc(60px * var(--scale)); 
+        height: calc(60px * var(--scale)); 
+        font-size: calc(2rem * var(--scale)); 
         font-weight:bold; 
         border:none; 
-        border-radius:28px; 
+        border-radius: calc(14px * var(--scale)); 
         background:white; 
-        box-shadow:0 6px 14px rgba(0,0,0,0.15); 
+        box-shadow:0 calc(3px * var(--scale)) calc(7px * var(--scale)) rgba(0,0,0,0.15); 
         cursor:pointer; 
         color:#444;
     }
-    .arrow-btn:active { 
-        transform:scale(0.95);
-    }
+    .arrow-btn:active { transform:scale(0.95); }
     .reset-btn { 
-        padding:28px 60px; 
-        font-size:2.4rem; 
+        padding: calc(14px * var(--scale)) calc(30px * var(--scale)); 
+        font-size: calc(1.2rem * var(--scale)); 
         border:none; 
-        border-radius:24px; 
-        background:#ff6b6b; 
-        color:white; 
+        border-radius: calc(12px * var(--scale)); 
         font-weight:600; 
-        margin-top:40px; 
         cursor:pointer; 
-        box-shadow:0 12px 24px rgba(0,0,0,0.15); 
+        box-shadow:0 calc(6px * var(--scale)) calc(12px * var(--scale)) rgba(0,0,0,0.15); 
     }
-    .reset-btn:active { 
-        transform:scale(0.97);
-    }
+    .reset-btn:active { transform:scale(0.97); }
+    .reset-btn#resetRow, .reset-btn#resetStitch { background:#ff6b6b; color:white; margin-top: calc(20px * var(--scale)); }
     .info { 
-        font-size:2rem; 
+        font-size: calc(1rem * var(--scale)); 
         color:#777; 
         position:absolute; 
-        bottom:140px; 
+        bottom: calc(70px * var(--scale)); 
         text-align:center; 
-        line-height:2.8em; 
+        line-height: calc(1.4em * var(--scale));
     }
     .timer-box { 
         display:flex; 
-        gap:40px; 
-        margin-top:40px;
+        gap: calc(20px * var(--scale)); 
+        margin-top: calc(20px * var(--scale));
     }
     .timer { 
-        font-size:6rem; 
+        font-size: calc(3rem * 0.75 * var(--scale)); /* 75%로 축소 */
         font-weight:700; 
-        min-width:360px; 
+        min-width: calc(180px * var(--scale)); 
         text-align:center; 
         background:white; 
-        border-radius:24px; 
-        box-shadow:0 6px 14px rgba(0,0,0,0.15); 
-        padding:20px 0;
+        border-radius: calc(12px * var(--scale)); 
+        box-shadow:0 calc(3px * var(--scale)) calc(7px * var(--scale)) rgba(0,0,0,0.15); 
+        padding: calc(10px * var(--scale)) 0;
     }
-    .start-btn, .end-btn { 
-        padding:28px 60px; 
-        font-size:2.4rem; 
+    .start-btn, .end-btn, .reset-btn#resetTimer { 
+        padding: calc(14px * var(--scale)) calc(30px * var(--scale)); 
+        font-size: calc(1.2rem * var(--scale)); 
         border:none; 
-        border-radius:24px; 
-        background:#4ecdc4; 
+        border-radius: calc(12px * var(--scale)); 
         color:white; 
         font-weight:600; 
         cursor:pointer; 
-        box-shadow:0 12px 24px rgba(0,0,0,0.15); 
+        box-shadow:0 calc(6px * var(--scale)) calc(12px * var(--scale)) rgba(0,0,0,0.15); 
     }
-    .end-btn { background:#ff6b6b; }
-    .start-btn:active, .end-btn:active { transform:scale(0.97); }
+    .start-btn { background:#4ecdc4; }
+    .end-btn { background:#b19cd9; } /* 옅은 보라색 */
+    .reset-btn#resetTimer { background:#ff6b6b; }
+    .start-btn:active, .end-btn:active, .reset-btn#resetTimer:active { transform:scale(0.97); }
+
+    .scale-buttons {
+        position:fixed;
+        bottom:20px;
+        right:20px;
+        display:flex;
+        flex-direction:column;
+        gap:10px;
+    }
+    .scale-btn {
+        padding:10px 16px;
+        font-size:1rem;
+        border:none;
+        border-radius:8px;
+        background:#555;
+        color:white;
+        cursor:pointer;
+    }
+    .scale-btn:active { transform:scale(0.95); }
 </style>
 </head>
 <body>
@@ -148,16 +165,23 @@
     a: 코 증가 / b: 코 초기화 / c: 단 증가
 </div>
 
-<!-- 타이머 영역 -->
 <div class="timer-box">
     <div class="timer" id="timerDisplay">00:00:00</div>
 </div>
 <div class="timer-box">
     <button class="start-btn" id="startTimer">Start</button>
     <button class="end-btn" id="endTimer">End</button>
+    <button class="reset-btn" id="resetTimer">Reset</button>
+</div>
+
+<div class="scale-buttons">
+    <button class="scale-btn" data-scale="1.0">1.0x</button>
+    <button class="scale-btn" data-scale="1.5">1.5x</button>
+    <button class="scale-btn" data-scale="2.0">2.0x</button>
 </div>
 
 <script>
+    // 단/코 카운터
     let countRow = parseInt(localStorage.getItem("knitRow") || "0");
     let countStitch = parseInt(localStorage.getItem("knitStitch") || "0");
     const rowEl = document.getElementById("rowCount");
@@ -172,7 +196,6 @@
 
     update();
 
-    // 키 입력 처리
     document.addEventListener("keydown", e => {
         const key = e.key.toLowerCase();
         if(key==="a"){ countStitch++; }
@@ -181,19 +204,14 @@
         update();
     });
 
-    // 단 ▲▼
     document.getElementById("rowUp").addEventListener("click", ()=>{ countRow++; update(); });
     document.getElementById("rowDown").addEventListener("click", ()=>{ if(countRow>0) countRow--; update(); });
-
-    // 코 ▲▼
     document.getElementById("stitchUp").addEventListener("click", ()=>{ countStitch++; update(); });
     document.getElementById("stitchDown").addEventListener("click", ()=>{ if(countStitch>0) countStitch--; update(); });
-
-    // 초기화
     document.getElementById("resetRow").addEventListener("click", ()=>{ countRow=0; update(); });
     document.getElementById("resetStitch").addEventListener("click", ()=>{ countStitch=0; update(); });
 
-    // ================= 타이머 =================
+    // 타이머
     let timer = 0;
     let intervalId = null;
     const timerEl = document.getElementById("timerDisplay");
@@ -206,9 +224,9 @@
     }
 
     document.getElementById("startTimer").addEventListener("click", ()=>{
-        if(intervalId) return; // 이미 실행 중
+        if(intervalId) return;
         intervalId = setInterval(()=>{
-            if(timer>=86400){ // 24시간 최대
+            if(timer>=86400){
                 clearInterval(intervalId);
                 intervalId = null;
                 return;
@@ -221,6 +239,21 @@
     document.getElementById("endTimer").addEventListener("click", ()=>{
         clearInterval(intervalId);
         intervalId = null;
+    });
+
+    document.getElementById("resetTimer").addEventListener("click", ()=>{
+        clearInterval(intervalId);
+        intervalId = null;
+        timer = 0;
+        timerEl.innerText = "00:00:00";
+    });
+
+    // 배율 버튼 이벤트
+    document.querySelectorAll('.scale-btn').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+            const scale = parseFloat(btn.getAttribute('data-scale'));
+            document.documentElement.style.setProperty('--scale', scale);
+        });
     });
 </script>
 
