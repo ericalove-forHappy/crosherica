@@ -2,157 +2,170 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
-<title>Knitting Counter Dual</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Knitting Counter Dual - 2x + Timer</title>
 <style>
-    body {
-        margin: 0;
-        background: #f7f7f7;
-        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-        user-select: none;
+    body { 
+        margin:0; 
+        background:#f7f7f7; 
+        font-family:-apple-system,BlinkMacSystemFont,sans-serif; 
+        display:flex; 
+        flex-direction:column; 
+        align-items:center; 
+        justify-content:center; 
+        height:100vh; 
+        user-select:none;
     }
-
-    .container {
-        display: flex;
-        flex-direction: row;
-        gap: 80px;
-        align-items: center;
+    .container { 
+        display:flex; 
+        gap:160px; 
+        align-items:center;
     }
-
-    .counter-box {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+    .counter-box { 
+        display:flex; 
+        flex-direction:column; 
+        align-items:center;
     }
-
-    .label {
-        font-size: 2rem;
-        color: #555;
-        margin-bottom: 10px;
+    .label { 
+        font-size:4rem; 
+        color:#555; 
+        margin-bottom:20px; 
     }
-
-    .value-wrapper {
-        display: flex;
-        align-items: center;
-        gap: 20px;
+    .value-wrapper { 
+        display:flex; 
+        align-items:center; 
+        gap:40px; 
     }
-
-    .value {
-        font-size: 6rem;
-        font-weight: 700;
-        color: #333;
-        min-width: 120px;
-        text-align: center;
+    .value { 
+        font-size:12rem; 
+        font-weight:700; 
+        color:#333; 
+        min-width:240px; 
+        text-align:center;
     }
-
-    .arrow-box {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
+    .arrow-box { 
+        display:flex; 
+        flex-direction:column; 
+        gap:30px; 
     }
-
-    .arrow-btn {
-        width: 60px;
-        height: 60px;
-        font-size: 2.2rem;
-        font-weight: bold;
-        border: none;
-        border-radius: 14px;
-        background: white;
-        box-shadow: 0 3px 7px rgba(0,0,0,0.15);
-        cursor: pointer;
-        color: #444;
+    .arrow-btn { 
+        width:120px; 
+        height:120px; 
+        font-size:4.4rem; 
+        font-weight:bold; 
+        border:none; 
+        border-radius:28px; 
+        background:white; 
+        box-shadow:0 6px 14px rgba(0,0,0,0.15); 
+        cursor:pointer; 
+        color:#444;
     }
-
-    .arrow-btn:active {
-        transform: scale(0.95);
+    .arrow-btn:active { 
+        transform:scale(0.95);
     }
-
-    .reset-btn {
-        padding: 14px 30px;
-        font-size: 1.2rem;
-        border: none;
-        border-radius: 12px;
-        background: #ff6b6b;
-        color: white;
-        font-weight: 600;
-        margin-top: 20px;
-        cursor: pointer;
-        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    .reset-btn { 
+        padding:28px 60px; 
+        font-size:2.4rem; 
+        border:none; 
+        border-radius:24px; 
+        background:#ff6b6b; 
+        color:white; 
+        font-weight:600; 
+        margin-top:40px; 
+        cursor:pointer; 
+        box-shadow:0 12px 24px rgba(0,0,0,0.15); 
     }
-
-    .reset-btn:active {
-        transform: scale(0.97);
+    .reset-btn:active { 
+        transform:scale(0.97);
     }
-
-    .info {
-        font-size: 1rem;
-        color: #777;
-        position: absolute;
-        bottom: 20px;
-        text-align: center;
-        line-height: 1.4em;
+    .info { 
+        font-size:2rem; 
+        color:#777; 
+        position:absolute; 
+        bottom:140px; 
+        text-align:center; 
+        line-height:2.8em; 
     }
+    .timer-box { 
+        display:flex; 
+        gap:40px; 
+        margin-top:40px;
+    }
+    .timer { 
+        font-size:6rem; 
+        font-weight:700; 
+        min-width:360px; 
+        text-align:center; 
+        background:white; 
+        border-radius:24px; 
+        box-shadow:0 6px 14px rgba(0,0,0,0.15); 
+        padding:20px 0;
+    }
+    .start-btn, .end-btn { 
+        padding:28px 60px; 
+        font-size:2.4rem; 
+        border:none; 
+        border-radius:24px; 
+        background:#4ecdc4; 
+        color:white; 
+        font-weight:600; 
+        cursor:pointer; 
+        box-shadow:0 12px 24px rgba(0,0,0,0.15); 
+    }
+    .end-btn { background:#ff6b6b; }
+    .start-btn:active, .end-btn:active { transform:scale(0.97); }
 </style>
 </head>
 <body>
 
 <div class="container">
-
-    <!-- 좌측: 단 -->
     <div class="counter-box">
         <div class="label">단</div>
-
         <div class="value-wrapper">
             <div class="value" id="rowCount">0</div>
-
             <div class="arrow-box">
                 <button class="arrow-btn" id="rowUp">▲</button>
                 <button class="arrow-btn" id="rowDown">▼</button>
             </div>
         </div>
-
         <button class="reset-btn" id="resetRow">단 초기화</button>
     </div>
 
-    <!-- 우측: 코 -->
     <div class="counter-box">
         <div class="label">코</div>
-
         <div class="value-wrapper">
             <div class="value" id="stitchCount">0</div>
-
             <div class="arrow-box">
                 <button class="arrow-btn" id="stitchUp">▲</button>
                 <button class="arrow-btn" id="stitchDown">▼</button>
             </div>
         </div>
-
         <button class="reset-btn" id="resetStitch">코 초기화</button>
     </div>
-
 </div>
 
 <div class="info">
     a: 코 증가 / b: 코 초기화 / c: 단 증가
 </div>
 
+<!-- 타이머 영역 -->
+<div class="timer-box">
+    <div class="timer" id="timerDisplay">00:00:00</div>
+</div>
+<div class="timer-box">
+    <button class="start-btn" id="startTimer">Start</button>
+    <button class="end-btn" id="endTimer">End</button>
+</div>
+
 <script>
-    // 저장된 값 불러오기
     let countRow = parseInt(localStorage.getItem("knitRow") || "0");
     let countStitch = parseInt(localStorage.getItem("knitStitch") || "0");
-
     const rowEl = document.getElementById("rowCount");
     const stitchEl = document.getElementById("stitchCount");
 
     function update() {
         rowEl.innerText = countRow;
         stitchEl.innerText = countStitch;
-
         localStorage.setItem("knitRow", countRow);
         localStorage.setItem("knitStitch", countStitch);
     }
@@ -160,50 +173,54 @@
     update();
 
     // 키 입력 처리
-    document.addEventListener("keydown", (e) => {
+    document.addEventListener("keydown", e => {
         const key = e.key.toLowerCase();
-
-        if (key === "a") {        // 코 증가
-            countStitch++;
-        } else if (key === "b") { // 코 초기화
-            countStitch = 0;
-        } else if (key === "c") { // 단 증가
-            countRow++;
-        }
+        if(key==="a"){ countStitch++; }
+        else if(key==="b"){ countStitch=0; }
+        else if(key==="c"){ countRow++; }
         update();
     });
 
     // 단 ▲▼
-    document.getElementById("rowUp").addEventListener("click", () => {
-        countRow++;
-        update();
-    });
-
-    document.getElementById("rowDown").addEventListener("click", () => {
-        if (countRow > 0) countRow--;
-        update();
-    });
+    document.getElementById("rowUp").addEventListener("click", ()=>{ countRow++; update(); });
+    document.getElementById("rowDown").addEventListener("click", ()=>{ if(countRow>0) countRow--; update(); });
 
     // 코 ▲▼
-    document.getElementById("stitchUp").addEventListener("click", () => {
-        countStitch++;
-        update();
+    document.getElementById("stitchUp").addEventListener("click", ()=>{ countStitch++; update(); });
+    document.getElementById("stitchDown").addEventListener("click", ()=>{ if(countStitch>0) countStitch--; update(); });
+
+    // 초기화
+    document.getElementById("resetRow").addEventListener("click", ()=>{ countRow=0; update(); });
+    document.getElementById("resetStitch").addEventListener("click", ()=>{ countStitch=0; update(); });
+
+    // ================= 타이머 =================
+    let timer = 0;
+    let intervalId = null;
+    const timerEl = document.getElementById("timerDisplay");
+
+    function formatTime(sec){
+        let hours = Math.floor(sec/3600);
+        let minutes = Math.floor((sec%3600)/60);
+        let seconds = sec % 60;
+        return String(hours).padStart(2,'0')+":"+String(minutes).padStart(2,'0')+":"+String(seconds).padStart(2,'0');
+    }
+
+    document.getElementById("startTimer").addEventListener("click", ()=>{
+        if(intervalId) return; // 이미 실행 중
+        intervalId = setInterval(()=>{
+            if(timer>=86400){ // 24시간 최대
+                clearInterval(intervalId);
+                intervalId = null;
+                return;
+            }
+            timer++;
+            timerEl.innerText = formatTime(timer);
+        }, 1000);
     });
 
-    document.getElementById("stitchDown").addEventListener("click", () => {
-        if (countStitch > 0) countStitch--;
-        update();
-    });
-
-    // 초기화 버튼
-    document.getElementById("resetRow").addEventListener("click", () => {
-        countRow = 0;
-        update();
-    });
-
-    document.getElementById("resetStitch").addEventListener("click", () => {
-        countStitch = 0;
-        update();
+    document.getElementById("endTimer").addEventListener("click", ()=>{
+        clearInterval(intervalId);
+        intervalId = null;
     });
 </script>
 
